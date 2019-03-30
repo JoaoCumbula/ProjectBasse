@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="65dp">
+
+        <TextView
+            android:id="@+id/nomeZona"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="5dp"
+            android:padding="23dp"
+            android:text="Nome da Zona"
+            android:textAppearance="?android:attr/textAppearanceLarge" />
+
+        <com.github.angads25.toggle.LabeledSwitch
+            android:id="@+id/switchZone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignEnd="@+id/view"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="12dp"
+            app:colorOn="#c31432"
+            app:textOff="OFF"
+            app:textOn="ON" />
+
+        <View
+            android:id="@+id/view"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_margin="10dp"
+            android:background="#061161" />
+
+
+    </RelativeLayout>
+
+</RelativeLayout>

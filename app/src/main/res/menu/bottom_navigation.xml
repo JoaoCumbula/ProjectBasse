@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/nav_saloes"
+        android:icon="@drawable/ic_format_list_bulleted_black_24dp"
+        android:title="Principal" />
+
+    <item
+        android:id="@+id/nav_marcacoes"
+        android:icon="@drawable/ic_book_black_24dp"
+        android:title="Zonas" />
+
+    <item
+        android:id="@+id/nav_definicoes"
+        android:icon="@drawable/ic_settings_black_24dp"
+        android:title="Definicoes" />
+</menu>
