@@ -57,16 +57,6 @@
         </android.support.design.widget.TextInputLayout>
 
         <Button
-            android:id="@+id/zonas"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:background="@drawable/background_login"
-            android:clickable="false"
-            android:text="Adicionar Zonas"
-            android:textColor="@android:color/white" />
-
-        <Button
             android:id="@+id/addicionar"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
@@ -76,15 +66,6 @@
             android:text="Adicionar"
             android:textColor="@android:color/white" />
 
-
-        <TextView
-            android:id="@+id/texto"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="25dp"
-            android:text="Zonas"
-            android:textColor="@color/blue_grey_primary"
-            android:textSize="20dp" />
 
     </LinearLayout>
 

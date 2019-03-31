@@ -8,22 +8,21 @@ import com.google.firebase.database.Exclude;
  */
 
 public class Alarme {
-    protected String morada, zonas, clienteAssociado;
+    protected String morada, clienteAssociado;
     int codAutorizacao, contacto;
 
     @JsonIgnore
     private String key;
 
-    public Alarme(String morada, int contacto, String zonas, int codAutorizacao, String clienteAssociado) {
+    public Alarme(String morada, int contacto, int codAutorizacao, String clienteAssociado) {
         this.morada = morada;
         this.contacto = contacto;
-        this.zonas = zonas;
         this.codAutorizacao = codAutorizacao;
         this.clienteAssociado = clienteAssociado;
     }
 
     public Alarme() {
-        this("", 0, "", 0, "");
+        this("", 0, 0, "");
     }
 
     public String getMorada() {
@@ -40,14 +39,6 @@ public class Alarme {
 
     public void setContacto(int contacto) {
         this.contacto = contacto;
-    }
-
-    public String getZonas() {
-        return zonas;
-    }
-
-    public void setZonas(String zonas) {
-        this.zonas = zonas;
     }
 
     public String getClienteAssociado() {
@@ -76,9 +67,8 @@ public class Alarme {
     }
 
     public void setValues(Alarme alarme) {
-        contacto = alarme.contacto;
         morada = alarme.morada;
-        zonas = alarme.zonas;
+        contacto = alarme.contacto;
         codAutorizacao = alarme.codAutorizacao;
         clienteAssociado = alarme.clienteAssociado;
     }

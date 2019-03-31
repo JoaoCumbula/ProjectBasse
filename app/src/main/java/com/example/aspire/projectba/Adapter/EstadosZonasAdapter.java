@@ -28,7 +28,7 @@ import java.util.List;
 
 public class EstadosZonasAdapter extends RecyclerView.Adapter<EstadosZonasAdapter.MyViewHolder> {
 
-    private static final String PATH_ZONAS = "https://projectba-dd74d.firebaseio.com/Alarme/Estados";
+    private static final String PATH_ZONAS = "https://projectba-dd74d.firebaseio.com/EstadosAlarme";
     FirebaseAuth auth = Conexao.getFireBaseAuth();
     FirebaseUser user = Conexao.getFirebaseUser();
     Firebase mDataRef;
@@ -50,7 +50,7 @@ public class EstadosZonasAdapter extends RecyclerView.Adapter<EstadosZonasAdapte
                 estadosZona = dataSnapshot.getValue(EstadosZona.class);
                 estadosZona.setKey(dataSnapshot.getKey());
 
-                if (user.getEmail().toString().equals(estadosZona.getNomeZona())) {
+                if (user.getEmail().toString().equals(estadosZona.getClienteAssociado())) {
                     mDataZona.add(0, estadosZona);
                     notifyDataSetChanged();
                 }
@@ -100,6 +100,18 @@ public class EstadosZonasAdapter extends RecyclerView.Adapter<EstadosZonasAdapte
     public void onBindViewHolder(MyViewHolder holder, int position) {
         holder.nomeZona.setText(mDataZona.get(position).getNomeZona());
         holder.switchZona.setOn(mDataZona.get(position).isEstadoZona());
+    }
+
+    public boolean zonaNomeUnico(String nomeZona) {
+        for (EstadosZona es : mDataZona) {
+            if (nomeZona.equals(es.getNomeZona()))
+                return true;
+        }
+        return false;
+    }
+
+    public void add(EstadosZona estadosZona) {
+        mDataRef.push().setValue(estadosZona);
     }
 
     @Override

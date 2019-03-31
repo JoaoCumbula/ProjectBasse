@@ -4,19 +4,30 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public class EstadosZona {
     protected String nomeZona;
-    protected String clienteAssociado;
+    protected int identificador;
     protected boolean estadoZona;
+    protected String clienteAssociado;
+
     @JsonIgnore
     private String key;
 
-    public EstadosZona(String nomeZona, String clienteAssociado, boolean estadoZona) {
+    public EstadosZona(String nomeZona, int identificador, String clienteAssociado, boolean estadoZona) {
         this.nomeZona = nomeZona;
+        this.identificador = identificador;
         this.clienteAssociado = clienteAssociado;
         this.estadoZona = estadoZona;
     }
 
     public EstadosZona() {
-        this("", "", false);
+        this("", 0, "", false);
+    }
+
+    public int getIdentificador() {
+        return identificador;
+    }
+
+    public void setIdentificador(int identificador) {
+        this.identificador = identificador;
     }
 
     public String getClienteAssociado() {
@@ -53,6 +64,7 @@ public class EstadosZona {
 
     public void setValues(EstadosZona zona) {
         nomeZona = zona.nomeZona;
+        identificador = zona.identificador;
         clienteAssociado = zona.clienteAssociado;
         estadoZona = zona.estadoZona;
     }
