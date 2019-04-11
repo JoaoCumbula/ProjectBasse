@@ -71,17 +71,14 @@ public class ClienteAdapter extends RecyclerView.Adapter<ClienteAdapter.MyViewHo
                 }
                 notifyDataSetChanged();
             }
-
             @Override
             public void onChildRemoved(DataSnapshot dataSnapshot) {
 
             }
-
             @Override
             public void onChildMoved(DataSnapshot dataSnapshot, String s) {
 
             }
-
             @Override
             public void onCancelled(FirebaseError firebaseError) {
 
@@ -94,16 +91,18 @@ public class ClienteAdapter extends RecyclerView.Adapter<ClienteAdapter.MyViewHo
         View view;
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
         view = inflater.inflate(R.layout.model_settings, parent, false);
-        return new ClienteAdapter.MyViewHolder(view);
+        return new MyViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(final MyViewHolder holder, int position) {
 
-        if (user.getEmail().toString().equals(mData.get(position).getEmail())) {
-            holder.nome.setText(mData.get(position).getNome());
-            holder.apelido.setText(mData.get(position).getApelido());
-            holder.contacto.setText(mData.get(position).getContacto() + "");
+        cliente = mData.get(position);
+
+        if (user.getEmail().toString().equals(cliente.getEmail())) {
+            holder.nome.setText(cliente.getNome());
+            holder.apelido.setText(cliente.getApelido());
+            holder.contacto.setText(cliente.getContacto() + "");
         }
         holder.editar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -128,7 +127,7 @@ public class ClienteAdapter extends RecyclerView.Adapter<ClienteAdapter.MyViewHo
                 cliente.setApelido(getApelido);
                 cliente.setEmail(user.getEmail());
                 cliente.setContacto(getContacto);
-                mDataRef.child(cliente.getKey()).setValue(cliente);
+                //   mDataRef.child(cliente.getKey()).setValue(cliente);
                 mCallBack.mensagem();
 
                 holder.nome.setText(getNome);
