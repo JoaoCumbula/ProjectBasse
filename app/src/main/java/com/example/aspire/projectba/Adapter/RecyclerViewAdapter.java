@@ -113,6 +113,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     @Override
     public void onBindViewHolder(MyViewHolder holder, final int position) {
 
+        // alarme=mData.get(position);
         holder.alarme.setText("Alarme: " + (position + 1) + " " + mData.get(position).getMorada());
 
         holder.cardView.setOnClickListener(new View.OnClickListener() {

@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.example.aspire.projectba.Modelo.Alarme;
 import com.example.aspire.projectba.Modelo.EstadosZona;
 import com.example.aspire.projectba.Others.ArmarDesarmar;
 import com.example.aspire.projectba.Others.Conexao;
@@ -16,6 +17,7 @@ import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.github.angads25.toggle.LabeledSwitch;
+import com.github.angads25.toggle.interfaces.OnToggledListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
@@ -34,11 +36,12 @@ public class EstadosZonasAdapter extends RecyclerView.Adapter<EstadosZonasAdapte
     Firebase mDataRef;
     private EstadosZona estadosZona;
     private List<EstadosZona> mDataZona;
+    private List<Alarme> mDataAlarme;
     private ArmarDesarmar mCallBack2;
     private Context context;
 
-    public EstadosZonasAdapter(ArmarDesarmar mCallBack2, Context context) {
-        mCallBack2 = mCallBack2;
+    public EstadosZonasAdapter(final ArmarDesarmar mCallBack2, Context context) {
+        this.mCallBack2 = mCallBack2;
         this.context = context;
         mDataZona = new ArrayList<EstadosZona>();
         Firebase.setAndroidContext(context);
@@ -51,9 +54,10 @@ public class EstadosZonasAdapter extends RecyclerView.Adapter<EstadosZonasAdapte
                 estadosZona.setKey(dataSnapshot.getKey());
 
                 if (user.getEmail().toString().equals(estadosZona.getClienteAssociado())) {
-                    mDataZona.add(0, estadosZona);
-                    notifyDataSetChanged();
+                    if (estadosZona.getIdentificador() == mCallBack2.getCodAutorizacao())
+                        mDataZona.add(0, estadosZona);
                 }
+                notifyDataSetChanged();
             }
 
             @Override
@@ -62,7 +66,6 @@ public class EstadosZonasAdapter extends RecyclerView.Adapter<EstadosZonasAdapte
                 EstadosZona estadosZona = dataSnapshot.getValue(EstadosZona.class);
 
                 for (EstadosZona as : mDataZona) {
-
                     if (as.getKey().equals(key)) {
                         as.setValues(estadosZona);
                         break;
@@ -93,13 +96,30 @@ public class EstadosZonasAdapter extends RecyclerView.Adapter<EstadosZonasAdapte
         View view;
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
         view = inflater.inflate(R.layout.model_zonas, parent, false);
-        return new EstadosZonasAdapter.MyViewHolder(view);
+        return new MyViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(MyViewHolder holder, int position) {
+    public void onBindViewHolder(MyViewHolder holder, final int position) {
+
         holder.nomeZona.setText(mDataZona.get(position).getNomeZona());
         holder.switchZona.setOn(mDataZona.get(position).isEstadoZona());
+
+        holder.switchZona.setOnToggledListener(new OnToggledListener() {
+            @Override
+            public void onSwitched(LabeledSwitch labeledSwitch, boolean isOn) {
+                estadosZona = mDataZona.get(position);
+                if (isOn) {
+                    mCallBack2.armar(mCallBack2.getContacto(), estadosZona.getIdentificador(), estadosZona.getNomeZona());
+                    estadosZona.setEstadoZona(true);
+                    mDataRef.child(estadosZona.getKey()).setValue(estadosZona);
+                } else {
+                    mCallBack2.desarmar(mCallBack2.getContacto(), estadosZona.getIdentificador(), estadosZona.getNomeZona());
+                    estadosZona.setEstadoZona(false);
+                    mDataRef.child(estadosZona.getKey()).setValue(estadosZona);
+                }
+            }
+        });
     }
 
     public boolean zonaNomeUnico(String nomeZona) {

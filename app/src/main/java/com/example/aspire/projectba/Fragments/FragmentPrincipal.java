@@ -92,7 +92,10 @@ public class FragmentPrincipal extends Fragment {
             }
         });
         recyclerView = (RecyclerView) vi.findViewById(R.id.recyclerrvi);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        LinearLayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
+        mLayoutManager.setReverseLayout(true);
+        mLayoutManager.setStackFromEnd(true);
+        recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setHasFixedSize(true);
         adapter = new RecyclerViewAdapter(this, getContext());
         recyclerView.setAdapter(adapter);
