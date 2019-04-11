@@ -3,8 +3,8 @@
     xmlns:cardview="http://schemas.android.com/apk/res-auto"
     android:id="@+id/cardview_id"
     android:layout_width="match_parent"
-    android:layout_height="140dp"
-    android:layout_margin="20dp"
+    android:layout_height="90dp"
+    android:layout_margin="10dp"
     android:background="@color/white"
     android:clickable="true"
     android:foreground="?android:attr/selectableItemBackground"
@@ -19,7 +19,7 @@
             android:id="@+id/alarme"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="35dp"
+            android:layout_marginTop="25dp"
             android:gravity="center"
             android:text="Dados do Alarme"
             android:textSize="18sp" />
@@ -27,7 +27,7 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:layout_margin="20dp"
+            android:layout_margin="13dp"
             android:background="#061161" />
     </LinearLayout>
 
