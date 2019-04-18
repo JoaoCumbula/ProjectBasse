@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -14,28 +14,48 @@
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
-            android:layout_marginStart="5dp"
-            android:padding="17dp"
+            android:padding="15dp"
             android:text="Nome da Zona"
             android:textAppearance="?android:attr/textAppearanceLarge" />
 
-        <com.github.angads25.toggle.LabeledSwitch
-            android:id="@+id/switchZone"
-            android:layout_width="wrap_content"
+        <TextView
+            android:id="@+id/statezone"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignEnd="@+id/view"
-            android:layout_centerVertical="true"
-            android:layout_marginEnd="12dp"
-            app:colorOn="#c31432"
-            app:textOff="OFF"
-            app:textOn="ON" />
+            android:layout_alignBottom="@+id/nomeZona"
+            android:layout_alignStart="@+id/view"
+            android:layout_marginLeft="17dp"
+            android:layout_marginTop="10dp"
+            android:text="OFF"
+            android:textSize="13sp" />
 
         <View
             android:id="@+id/view"
             android:layout_width="match_parent"
-            android:layout_height="1dp"
+            android:layout_height="2dp"
             android:layout_margin="5dp"
             android:background="#061161" />
+
+        <View
+            android:id="@+id/view1"
+            android:layout_width="1dp"
+            android:layout_height="50dp"
+            android:layout_alignBottom="@+id/switchZone"
+            android:layout_alignTop="@id/view"
+            android:layout_marginEnd="33dp"
+            android:layout_marginTop="10dp"
+            android:layout_toStartOf="@+id/switchZone"
+            android:background="#061161" />
+
+        <android.support.v7.widget.SwitchCompat
+            android:id="@+id/switchZone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/nomeZona"
+            android:layout_alignBottom="@+id/nomeZona"
+            android:layout_alignEnd="@+id/view"
+            android:layout_marginEnd="27dp"
+            android:theme="@style/ThemeOverlay.MySwitchCompat" />
 
 
     </RelativeLayout>

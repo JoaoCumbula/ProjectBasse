@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 public class EstadosZona {
     protected String nomeZona;
     protected int identificador;
-    protected boolean estadoZona;
+    protected boolean estadoZonab;
     protected String clienteAssociado;
 
     @JsonIgnore
@@ -15,7 +15,7 @@ public class EstadosZona {
         this.nomeZona = nomeZona;
         this.identificador = identificador;
         this.clienteAssociado = clienteAssociado;
-        this.estadoZona = estadoZona;
+        this.estadoZonab = estadoZona;
     }
 
     public EstadosZona() {
@@ -55,17 +55,14 @@ public class EstadosZona {
     }
 
     public boolean isEstadoZona() {
-        return estadoZona;
+        return estadoZonab;
     }
 
     public void setEstadoZona(boolean estadoZona) {
-        this.estadoZona = estadoZona;
+        this.estadoZonab = estadoZona;
     }
 
     public void setValues(EstadosZona zona) {
-        nomeZona = zona.nomeZona;
-        identificador = zona.identificador;
-        clienteAssociado = zona.clienteAssociado;
-        estadoZona = zona.estadoZona;
+        estadoZonab = zona.estadoZonab;
     }
 }

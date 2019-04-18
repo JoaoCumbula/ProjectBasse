@@ -2,12 +2,13 @@ package com.example.aspire.projectba.Adapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SwitchCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CompoundButton;
 import android.widget.TextView;
 
-import com.example.aspire.projectba.Modelo.Alarme;
 import com.example.aspire.projectba.Modelo.EstadosZona;
 import com.example.aspire.projectba.Others.ArmarDesarmar;
 import com.example.aspire.projectba.Others.Conexao;
@@ -16,8 +17,6 @@ import com.firebase.client.ChildEventListener;
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
-import com.github.angads25.toggle.LabeledSwitch;
-import com.github.angads25.toggle.interfaces.OnToggledListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
@@ -34,9 +33,8 @@ public class EstadosZonasAdapter extends RecyclerView.Adapter<EstadosZonasAdapte
     FirebaseAuth auth = Conexao.getFireBaseAuth();
     FirebaseUser user = Conexao.getFirebaseUser();
     Firebase mDataRef;
-    private EstadosZona estadosZona;
+    private EstadosZona estadosZona, es2;
     private List<EstadosZona> mDataZona;
-    private List<Alarme> mDataAlarme;
     private ArmarDesarmar mCallBack2;
     private Context context;
 
@@ -56,8 +54,8 @@ public class EstadosZonasAdapter extends RecyclerView.Adapter<EstadosZonasAdapte
                 if (user.getEmail().toString().equals(estadosZona.getClienteAssociado())) {
                     if (estadosZona.getIdentificador() == mCallBack2.getCodAutorizacao())
                         mDataZona.add(0, estadosZona);
+                    notifyDataSetChanged();
                 }
-                notifyDataSetChanged();
             }
 
             @Override
@@ -66,6 +64,7 @@ public class EstadosZonasAdapter extends RecyclerView.Adapter<EstadosZonasAdapte
                 EstadosZona estadosZona = dataSnapshot.getValue(EstadosZona.class);
 
                 for (EstadosZona as : mDataZona) {
+
                     if (as.getKey().equals(key)) {
                         as.setValues(estadosZona);
                         break;
@@ -93,34 +92,45 @@ public class EstadosZonasAdapter extends RecyclerView.Adapter<EstadosZonasAdapte
 
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view;
-        LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-        view = inflater.inflate(R.layout.model_zonas, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.model_zonas, parent, false);
         return new MyViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(MyViewHolder holder, final int position) {
-
         holder.nomeZona.setText(mDataZona.get(position).getNomeZona());
-        holder.switchZona.setOn(mDataZona.get(position).isEstadoZona());
+        holder.switchZone.setChecked(mDataZona.get(position).isEstadoZona());
+        if (mDataZona.get(position).isEstadoZona() == true)
+            holder.stateZoneText.setText("ON");
+        else
+            holder.stateZoneText.setText("OFF");
 
-        holder.switchZona.setOnToggledListener(new OnToggledListener() {
+        holder.switchZone.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
-            public void onSwitched(LabeledSwitch labeledSwitch, boolean isOn) {
-                estadosZona = mDataZona.get(position);
-                if (isOn) {
-                    mCallBack2.armar(mCallBack2.getContacto(), estadosZona.getIdentificador(), estadosZona.getNomeZona());
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                EstadosZona estadosZona = mDataZona.get(position);
+                if (isChecked) {
+                    mCallBack2.armar(mCallBack2.getContacto(), estadosZona.getIdentificador(), estadosZona.getNomeZona(), position);
                     estadosZona.setEstadoZona(true);
                     mDataRef.child(estadosZona.getKey()).setValue(estadosZona);
                 } else {
-                    mCallBack2.desarmar(mCallBack2.getContacto(), estadosZona.getIdentificador(), estadosZona.getNomeZona());
+                    mCallBack2.desarmar(mCallBack2.getContacto(), estadosZona.getIdentificador(), estadosZona.getNomeZona(), position);
                     estadosZona.setEstadoZona(false);
                     mDataRef.child(estadosZona.getKey()).setValue(estadosZona);
                 }
             }
         });
     }
+
+  /*  public void armaTudo(){
+            es2.setEstadoZona(true);
+            mDataRef.child(estadosZona.getKey()).setValue(estadosZona);
+
+    }
+    public void desarmaTudo(){
+            es2.setEstadoZona(false);
+            mDataRef.child(estadosZona.getKey()).setValue(estadosZona);
+    }*/
 
     public boolean zonaNomeUnico(String nomeZona) {
         for (EstadosZona es : mDataZona) {
@@ -142,13 +152,14 @@ public class EstadosZonasAdapter extends RecyclerView.Adapter<EstadosZonasAdapte
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
 
-        TextView nomeZona;
-        LabeledSwitch switchZona;
+        TextView nomeZona, stateZoneText;
+        SwitchCompat switchZone;
 
         public MyViewHolder(View itemView) {
             super(itemView);
+            stateZoneText = (TextView) itemView.findViewById(R.id.statezone);
             nomeZona = (TextView) itemView.findViewById(R.id.nomeZona);
-            switchZona = (LabeledSwitch) itemView.findViewById(R.id.switchZone);
+            switchZone = (SwitchCompat) itemView.findViewById(R.id.switchZone);
         }
     }
 }

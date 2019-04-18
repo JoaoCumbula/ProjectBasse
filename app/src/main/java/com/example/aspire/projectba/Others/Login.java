@@ -113,19 +113,19 @@ public class Login extends AppCompatActivity {
                 AlertDialog.Builder d = new AlertDialog.Builder(Login.this);
                 View view = getLayoutInflater().inflate(R.layout.dialog_manual, null);
                 content = (TextView) view.findViewById(R.id.content);
-                content.setText("A Aplicacao Basse tem como objectivo facilitar/Automatizar do Alarme equipado na Residencia. " +
+                content.setText("A Aplicação Basse tem como objectivo facilitar/Automatizar do Alarme equipado na Residência. " +
                         "\n\nCOMO UTILIZAR??" +
-                        "\nE necessario cadastrar a conta com dados pessoais, a mesma conta deve estar de preferencia associada" +
-                        "a um endereco e-mail (hotmail, gmail, yahoo)" +
-                        "Apos a criacao esta habilitado/a a iniciar a sessao" +
-                        "\n\nCONFIGURACAO" +
-                        "\nDando Inicio a pagina principal, e necessario que adicione o alarme correspondente a residencia com dados" +
-                        "que serao fornecidos pela BASSE (O contacto e codigo de Autorizacao)." +
-                        "Sera necessario selecionar zonas que correspondem a cada compartimento (comodos) da residencia" +
+                        "\nÉ necessário cadastrar a conta com dados pessoais, a mesma conta deve estar de preferência associada" +
+                        "a um endereço e-mail (hotmail, gmail, yahoo)" +
+                        "Após a criação esta habilitado/a a iniciar a sessão" +
+                        "\n\nCONFIGURAÇÃO" +
+                        "\nDando Inicio a página principal, e necessário que adicione o alarme correspondente a residência com dados" +
+                        "que serão fornecidos pela BASSE (O contacto e código de Autorização)." +
+                        "Será necessário selecionar zonas que correspondem a cada compartimento (cômodos) da residência" +
                         "\n\nCOMO UTILIZAR" +
-                        "\nDe seguida, o Alarme estara pronto para ser utilizado, clicando no Alarme tem as opcoes de armar" +
+                        "\nDe seguida, o Alarme estará pronto para ser utilizado, clicando no Alarme tem as opções de armar" +
                         "e desarmar em cada compartimento (cozinha, sala, escritorio, etc.)" +
-                        "\n\n2019 BASSE. Todos os Direitos Reservados.");
+                        "\n\n\t2019 BASSE. Todos os Direitos Reservados.\n\n\n\n");
                 d.setView(view);
                 AlertDialog dialog = d.create();
                 dialog.show();

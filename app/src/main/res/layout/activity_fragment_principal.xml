@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/login_client_gradients"
+    android:background="@drawable/security"
     android:paddingBottom="16dp"
     android:paddingLeft="16dp"
     android:paddingRight="16dp"
@@ -27,7 +27,7 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"
         android:layout_gravity="bottom|end"
-        android:layout_marginBottom="21dp"
+        android:layout_marginBottom="12dp"
         android:layout_marginEnd="19dp"
         android:src="@drawable/ic_add_black_24dp"
         app:backgroundTint="#c31432" />

@@ -12,8 +12,10 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SwitchCompat;
 import android.telephony.SmsManager;
 import android.view.View;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -21,25 +23,20 @@ import android.widget.Toast;
 import com.example.aspire.projectba.Adapter.EstadosZonasAdapter;
 import com.example.aspire.projectba.Modelo.EstadosZona;
 import com.example.aspire.projectba.R;
-import com.github.angads25.toggle.LabeledSwitch;
-import com.github.angads25.toggle.interfaces.OnToggledListener;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-import java.util.ArrayList;
-
 public class ArmarDesarmar extends AppCompatActivity {
     int MY_PERMISSIONS_REQUEST_REQUEST_SMS = 1;
-    SmsManager manager = SmsManager.getDefault();
-    FirebaseUser user = Conexao.getFirebaseUser();
+    SmsManager manager;
+    FirebaseUser user;
     String guardarZona;
     int getContacto, getCodAuto;
-    private TextView armarTudo;
+    private TextView armarTudo, testZone;
     private EditText campoZonas;
-    private LabeledSwitch switchArmarTudo;
+    private SwitchCompat switchArmarTudo;
     private DatabaseReference databaseReference;
-    private ArrayList<EstadosZona> zonasSep;
     private RecyclerView recyclerView;
     private EstadosZonasAdapter adapter;
     private AlertDialog.Builder d;
@@ -49,10 +46,12 @@ public class ArmarDesarmar extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_armar_desarmar);
-
+        user = Conexao.getFirebaseUser();
+        manager = SmsManager.getDefault();
         databaseReference = FirebaseDatabase.getInstance().getReference();
         armarTudo = (TextView) findViewById(R.id.armarTudo);
-        switchArmarTudo = (LabeledSwitch) findViewById(R.id.switchArmarTudo);
+        testZone = (TextView) findViewById(R.id.statezone);
+        switchArmarTudo = (SwitchCompat) findViewById(R.id.switchArmarTudo);
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fabZonas);
 
         Intent intent = getIntent();
@@ -101,8 +100,6 @@ public class ArmarDesarmar extends AppCompatActivity {
 
         recyclerView = (RecyclerView) findViewById(R.id.recycle);
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(this);
-        mLayoutManager.setReverseLayout(true);
-        mLayoutManager.setStackFromEnd(true);
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setHasFixedSize(true);
         adapter = new EstadosZonasAdapter(this, this);
@@ -110,17 +107,21 @@ public class ArmarDesarmar extends AppCompatActivity {
         adapter.notifyDataSetChanged();
 
 
-        switchArmarTudo.setOnToggledListener(new OnToggledListener() {
+        switchArmarTudo.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
-            public void onSwitched(LabeledSwitch labeledSwitch, boolean isOn) {
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 String semZona = "";
-                if (isOn)
-                    armar(getContacto, getCodAuto, semZona);
-                else
-                    desarmar(getContacto, getCodAuto, semZona);
+                if (isChecked) {
+                    // armar(getContacto, getCodAuto, semZona);
+                    // adapter.armaTudo();
+                    testZone.setText("ON");
+                } else {
+                    // desarmar(getContacto, getCodAuto, semZona);
+                    //adapter.desarmaTudo();
+                    testZone.setText("OFF");
+                }
             }
         });
-
     }
 
 
@@ -132,25 +133,25 @@ public class ArmarDesarmar extends AppCompatActivity {
         return getCodAuto;
     }
 
-    public void armar(int getContacto, int getCodAuto, String getZona) {
+    public void armar(int getContacto, int getCodAuto, String getZona, int position) {
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.SEND_SMS)
                 != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.SEND_SMS},
                     MY_PERMISSIONS_REQUEST_REQUEST_SMS);
         } else {
             // manager.sendTextMessage(String.valueOf(getContacto), null, getCodAuto + " arm " + getZona, null, null);
-            Toast.makeText(this, "Armado", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Armado" + position, Toast.LENGTH_SHORT).show();
         }
     }
 
-    public void desarmar(int getContacto, int getCodAuto, String getZona) {
+    public void desarmar(int getContacto, int getCodAuto, String getZona, int position) {
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.SEND_SMS)
                 != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.SEND_SMS},
                     MY_PERMISSIONS_REQUEST_REQUEST_SMS);
         } else {
             //manager.sendTextMessage(String.valueOf(getContacto), null, getCodAuto + " disarm " + getZona, null, null);
-            Toast.makeText(this, "Desarmado", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Desarmado" + position, Toast.LENGTH_SHORT).show();
         }
     }
 

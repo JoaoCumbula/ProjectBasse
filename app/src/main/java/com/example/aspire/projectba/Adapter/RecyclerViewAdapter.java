@@ -142,7 +142,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 remove(mData.get(position));
-                                //mCallBack.messagem();
+                                //mCallBack
                                 real[0] = true;
                             }
                         });
