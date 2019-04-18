@@ -22,7 +22,7 @@
                 android:id="@+id/idEditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Morada"
+                android:hint="Localizacao"
                 android:singleLine="true" />
 
         </android.support.design.widget.TextInputLayout>
@@ -36,7 +36,7 @@
                 android:id="@+id/contactoEditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Contacto "
+                android:hint="Contacto do Alarme"
                 android:inputType="number|phone"
                 android:singleLine="true" />
 
@@ -51,7 +51,7 @@
                 android:id="@+id/codigoAutorizacao"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Codigo de Autorizacao"
+                android:hint="Codigo de Autorizacao do Alarme"
                 android:singleLine="true" />
 
         </android.support.design.widget.TextInputLayout>
