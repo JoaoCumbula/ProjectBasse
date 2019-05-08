@@ -1,13 +1,15 @@
 package com.example.aspire.projectba.Adapter;
 
 import android.content.Context;
+import android.content.DialogInterface;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SwitchCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CompoundButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.aspire.projectba.Modelo.EstadosZona;
 import com.example.aspire.projectba.Others.ArmarDesarmar;
@@ -33,10 +35,11 @@ public class EstadosZonasAdapter extends RecyclerView.Adapter<EstadosZonasAdapte
     FirebaseAuth auth = Conexao.getFireBaseAuth();
     FirebaseUser user = Conexao.getFirebaseUser();
     Firebase mDataRef;
-    private EstadosZona estadosZona, es2;
+    private EstadosZona estadosZona;
     private List<EstadosZona> mDataZona;
     private ArmarDesarmar mCallBack2;
     private Context context;
+    private AlertDialog.Builder builder;
 
     public EstadosZonasAdapter(final ArmarDesarmar mCallBack2, Context context) {
         this.mCallBack2 = mCallBack2;
@@ -44,6 +47,7 @@ public class EstadosZonasAdapter extends RecyclerView.Adapter<EstadosZonasAdapte
         mDataZona = new ArrayList<EstadosZona>();
         Firebase.setAndroidContext(context);
         mDataRef = new Firebase(PATH_ZONAS);
+        builder = new AlertDialog.Builder(context);
 
         mDataRef.addChildEventListener(new ChildEventListener() {
             @Override
@@ -54,19 +58,19 @@ public class EstadosZonasAdapter extends RecyclerView.Adapter<EstadosZonasAdapte
                 if (user.getEmail().toString().equals(estadosZona.getClienteAssociado())) {
                     if (estadosZona.getIdentificador() == mCallBack2.getCodAutorizacao())
                         mDataZona.add(0, estadosZona);
-                    notifyDataSetChanged();
                 }
+                notifyDataSetChanged();
             }
 
             @Override
             public void onChildChanged(DataSnapshot dataSnapshot, String s) {
                 String key = dataSnapshot.getKey();
-                EstadosZona estadosZona = dataSnapshot.getValue(EstadosZona.class);
+                EstadosZona newestadosZona = dataSnapshot.getValue(EstadosZona.class);
 
                 for (EstadosZona as : mDataZona) {
 
                     if (as.getKey().equals(key)) {
-                        as.setValues(estadosZona);
+                        as.setValues(newestadosZona);
                         break;
                     }
                 }
@@ -75,7 +79,14 @@ public class EstadosZonasAdapter extends RecyclerView.Adapter<EstadosZonasAdapte
 
             @Override
             public void onChildRemoved(DataSnapshot dataSnapshot) {
-
+                String key = dataSnapshot.getKey();
+                for (EstadosZona sa : mDataZona) {
+                    if (key.equals(sa.getKey())) {
+                        mDataZona.remove(sa);
+                        notifyDataSetChanged();
+                        break;
+                    }
+                }
             }
 
             @Override
@@ -98,28 +109,90 @@ public class EstadosZonasAdapter extends RecyclerView.Adapter<EstadosZonasAdapte
 
     @Override
     public void onBindViewHolder(MyViewHolder holder, final int position) {
-        holder.nomeZona.setText(mDataZona.get(position).getNomeZona());
-        holder.switchZone.setChecked(mDataZona.get(position).isEstadoZona());
-        if (mDataZona.get(position).isEstadoZona() == true)
+        final EstadosZona estadosZona = mDataZona.get(position);
+        Toast.makeText(context, estadosZona.getNomeZona(), Toast.LENGTH_SHORT).show();
+        holder.nomeZona.setText(estadosZona.getNomeZona());
+
+        holder.switchZone.setChecked(estadosZona.isEstadoZona());
+
+
+        if (estadosZona.isEstadoZona() == true)
             holder.stateZoneText.setText("ON");
         else
             holder.stateZoneText.setText("OFF");
 
-        holder.switchZone.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        holder.switchZone.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                EstadosZona estadosZona = mDataZona.get(position);
-                if (isChecked) {
+            public void onClick(View v) {
+                SwitchCompat s = (SwitchCompat) v;
+                if (s.isChecked()) {
+                    Toast.makeText(context, estadosZona.getNomeZona() + " click" + position, Toast.LENGTH_SHORT).show();
+
                     mCallBack2.armar(mCallBack2.getContacto(), estadosZona.getIdentificador(), estadosZona.getNomeZona(), position);
                     estadosZona.setEstadoZona(true);
                     mDataRef.child(estadosZona.getKey()).setValue(estadosZona);
                 } else {
+
                     mCallBack2.desarmar(mCallBack2.getContacto(), estadosZona.getIdentificador(), estadosZona.getNomeZona(), position);
                     estadosZona.setEstadoZona(false);
                     mDataRef.child(estadosZona.getKey()).setValue(estadosZona);
                 }
             }
         });
+// {
+//            @Override
+//            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+//
+//
+//
+//            }
+//        });
+
+        holder.nomeZona.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                final boolean[] real = new boolean[1];
+                builder.setCancelable(true);
+                builder.setTitle("Remocao da Zona");
+                builder.setMessage("Deseja Remover?");
+                builder.setPositiveButton("Confirmar",
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                remove(mDataZona.get(position));
+                                //mCallBack
+                                real[0] = true;
+                            }
+                        });
+                builder.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        real[0] = false;
+                    }
+                });
+
+                AlertDialog dialog = builder.create();
+                dialog.show();
+
+                return real[0];
+            }
+        });
+
+        holder.nomeZona.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mCallBack2.actualizarNomeZona(estadosZona);
+            }
+        });
+    }
+
+    public void remove(EstadosZona estadosZona) {
+        mDataRef.child(estadosZona.getKey()).removeValue();
+    }
+
+    public void update(EstadosZona estadosZona, String nomeZona) {
+        estadosZona.setNomeZona(nomeZona);
+        mDataRef.child(estadosZona.getKey()).setValue(estadosZona);
     }
 
   /*  public void armaTudo(){
@@ -134,7 +207,7 @@ public class EstadosZonasAdapter extends RecyclerView.Adapter<EstadosZonasAdapte
 
     public boolean zonaNomeUnico(String nomeZona) {
         for (EstadosZona es : mDataZona) {
-            if (nomeZona.equals(es.getNomeZona()))
+            if (nomeZona.equalsIgnoreCase(es.getNomeZona()))
                 return true;
         }
         return false;

@@ -26,7 +26,8 @@
             android:name=".Others.MainActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity android:name=".Others.Cadastro" />
-        <activity android:name=".Others.ArmarDesarmar"></activity>
+        <activity android:name=".Others.ArmarDesarmar" />
+        <activity android:name=".Others.ArmarTudo"></activity>
     </application>
 
 </manifest>

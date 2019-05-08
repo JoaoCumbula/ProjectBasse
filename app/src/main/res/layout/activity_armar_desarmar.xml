@@ -4,28 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/security"
     tools:context="com.example.aspire.projectba.Others.ArmarDesarmar">
-
-    <TextView
-        android:id="@+id/armarTudo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignStart="@+id/statezone"
-        android:layout_alignTop="@+id/switchArmarTudo"
-        android:text="Armar Tudo"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:textSize="20dp" />
-
-    <TextView
-        android:id="@+id/statezone"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/armarTudo"
-        android:layout_marginLeft="19dp"
-        android:layout_marginTop="25dp"
-        android:text="OFF"
-        android:textSize="13sp" />
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="wrap_content"
@@ -50,18 +29,8 @@
         android:id="@+id/recycle"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_above="@id/fabZonas"
         android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginTop="68dp" />
-
-    <android.support.v7.widget.SwitchCompat
-        android:id="@+id/switchArmarTudo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignEnd="@+id/fabZonas"
-        android:layout_alignParentTop="true"
-        android:layout_marginEnd="14dp"
-        android:layout_marginTop="20dp"
-        android:theme="@style/ThemeOverlay.MySwitchCompat" />
+        android:layout_alignParentTop="true" />
 
 </RelativeLayout>

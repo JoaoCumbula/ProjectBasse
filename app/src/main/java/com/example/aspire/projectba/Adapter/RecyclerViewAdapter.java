@@ -14,7 +14,7 @@ import android.widget.TextView;
 
 import com.example.aspire.projectba.Fragments.FragmentPrincipal;
 import com.example.aspire.projectba.Modelo.Alarme;
-import com.example.aspire.projectba.Others.ArmarDesarmar;
+import com.example.aspire.projectba.Others.ArmarTudo;
 import com.example.aspire.projectba.Others.Conexao;
 import com.example.aspire.projectba.R;
 import com.firebase.client.ChildEventListener;
@@ -44,7 +44,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     private AlertDialog.Builder builder;
 
     public RecyclerViewAdapter(FragmentPrincipal callback, Context context) {
-        mCallBack = callback;
+        this.mCallBack = callback;
         this.context = context;
         mData = new ArrayList<Alarme>();
         Firebase.setAndroidContext(context);
@@ -119,7 +119,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         holder.cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(context, ArmarDesarmar.class);
+                Intent intent = new Intent(context, ArmarTudo.class);
 
                 // passing data to the activity
                 intent.putExtra("Morada", mData.get(position).getMorada());
@@ -135,7 +135,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             public boolean onLongClick(View v) {
                 final boolean[] real = new boolean[1];
                 builder.setCancelable(true);
-                builder.setTitle("Remocao do Salao");
+                builder.setTitle("Remocao do Alarme");
                 builder.setMessage("Deseja Remover?");
                 builder.setPositiveButton("Confirmar",
                         new DialogInterface.OnClickListener() {
